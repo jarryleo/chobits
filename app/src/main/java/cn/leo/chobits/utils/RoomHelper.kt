@@ -17,7 +17,7 @@ object RoomHelper {
     /**
      * 数据库名称，自定义
      */
-    const val DB_NAME = "db_name"
+    const val DB_NAME = "db_name_chobits"
 
     /**
      * 数据库对象缓存

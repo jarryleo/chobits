@@ -1,0 +1,109 @@
+<resources>
+    <!--  文本样式基础属性 -->
+    <style name="base_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!--  字体大小  -->
+    <style name="base_text_style_size_24" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_24</item>
+    </style>
+
+    <style name="base_text_style_size_20" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_20</item>
+    </style>
+
+    <style name="base_text_style_size_18" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_18</item>
+    </style>
+
+    <style name="base_text_style_size_16" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_16</item>
+    </style>
+
+    <style name="base_text_style_size_15" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_15</item>
+    </style>
+
+    <style name="base_text_style_size_14" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_14</item>
+    </style>
+
+    <style name="base_text_style_size_13" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_13</item>
+    </style>
+
+    <style name="base_text_style_size_12" parent="base_text_style">
+        <item name="android:textSize">@dimen/base_text_size_12</item>
+    </style>
+
+
+    <!--  字体颜色  -->
+    <style name="base_text_size_20_color_dark" parent="base_text_style_size_20">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    
+
+    <!--  黑色标题文本16  -->
+    <style name="base_text_size_16_color_black" parent="base_text_style_size_16">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--  黑色标题文本24加粗  -->
+    <style name="base_text_bold_size_24_color_black" parent="base_text_style_size_24">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--  黑色标题文本16  -->
+    <style name="base_text_size_16_color_7A7A7A" parent="base_text_style_size_16">
+        <item name="android:textColor">@color/gray_7A</item>
+    </style>
+
+    <!--  白色标题文本20  -->
+    <style name="base_text_size_20_white" parent="base_text_style_size_20">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--  白色标题文本15  -->
+    <style name="base_text_size_15_white" parent="base_text_style_size_15">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--  白色标题文本16  -->
+    <style name="base_text_size_16_white" parent="base_text_style_size_16">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+
+    <!--  灰色文本12  -->
+    <style name="base_text_size_12_gray_black" parent="base_text_style_size_12">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--  灰色文本12  -->
+    <style name="base_text_size_12_gray_7A7A7A" parent="base_text_style_size_12">
+        <item name="android:textColor">@color/gray_7A</item>
+    </style>
+
+    
+    <!--  灰色15号字7a  -->
+    <style name="base_text_size_15_gray_7A7A7A" parent="base_text_style_size_15">
+        <item name="android:textColor">@color/gray_7A</item>
+    </style>
+    
+
+    <!--  黑色15号字22 -->
+    <style name="base_text_size_15_dark_black" parent="base_text_style_size_15">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+ 
+    <!--  灰色14号字7a  -->
+    <style name="base_text_size_14_gray_7A7A7A" parent="base_text_style_size_14">
+        <item name="android:textColor">@color/gray_7A</item>
+    </style>
+    
+</resources>

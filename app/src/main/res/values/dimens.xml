@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 字体大小，采用dp不跟随系统字体大小变化，如果要跟随，则直接修改  -->
+    <dimen name="base_text_size_24">24dp</dimen>
+    <dimen name="base_text_size_20">20dp</dimen>
+    <dimen name="base_text_size_18">18dp</dimen>
+    <dimen name="base_text_size_16">16dp</dimen>
+    <dimen name="base_text_size_15">15dp</dimen>
+    <dimen name="base_text_size_14">14dp</dimen>
+    <dimen name="base_text_size_13">13dp</dimen>
+    <dimen name="base_text_size_12">12dp</dimen>
+    <dimen name="base_text_size_10">10dp</dimen>
+    <dimen name="base_text_size_9">9dp</dimen>
+
+    <!--  通用边距  -->
+    <dimen name="base_margin">16dp</dimen>
+    <dimen name="base_padding">8dp</dimen>
+
+    <!--  通用分割线粗细  -->
+    <dimen name="base_divide_size">1dp</dimen>
+    <dimen name="base_divide_block_size">8dp</dimen>
+
+
+</resources>

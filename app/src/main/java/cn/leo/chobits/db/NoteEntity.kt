@@ -2,6 +2,7 @@ package cn.leo.chobits.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import cn.leo.chobits.utils.toCommentDateToYMD
 
 /**
  * @author : leo
@@ -17,4 +18,6 @@ data class NoteEntity(
     val summary: String? = "",
     val content: String? = "",
     val date: Long = 0L,
-)
+) {
+    fun getDateFormat(): String = date.toCommentDateToYMD()
+}
