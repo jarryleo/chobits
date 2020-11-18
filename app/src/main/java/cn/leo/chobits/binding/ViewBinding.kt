@@ -28,7 +28,6 @@ fun bindingLayoutManager(recyclerView: RecyclerView, orientation: Int) {
 
 /**
  * 绑定下拉刷新的状态
- * recyclerView 不能是 SmartRefreshLayout的直接子孩子
  */
 @BindingAdapter("bindState")
 fun bindingState(smartRefreshLayout: SmartRefreshLayout, adapter: SimplePagingAdapter) {

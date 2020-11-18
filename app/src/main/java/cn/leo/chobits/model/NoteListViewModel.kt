@@ -19,9 +19,7 @@ class NoteListViewModel : ViewModel() {
     private val db by DbModelProperty(DB::class.java)
 
     val pager =
-        SimplePager(viewModelScope,
-            pagingSource = { db.noteDao().getNoteList() }
-        )
+        SimplePager(viewModelScope, pagingSource = { db.noteDao().getNoteList() })
 
     fun testInsert() {
         viewModelScope.launch(Dispatchers.IO) {
