@@ -13,6 +13,9 @@ import cn.leo.paging_ktx.PagingDataAdapterKtx
  */
 
 
+/**
+ * RecyclerView 列表条目绑定，PagingAdapter库定制拓展
+ */
 const val BINDING_KEY = "DataBinding_Key"
 inline fun <reified T : ViewDataBinding> PagingDataAdapterKtx.ItemHelper.binding(): T? {
     var dataBinding = getTag(BINDING_KEY) as? T
@@ -24,7 +27,8 @@ inline fun <reified T : ViewDataBinding> PagingDataAdapterKtx.ItemHelper.binding
     return dataBinding
 }
 
-
-inline fun <reified T : ViewDataBinding> Activity.binding(
-    @LayoutRes resId: Int
-): Lazy<T> = lazy { DataBindingUtil.setContentView<T>(this, resId) }
+/**
+ * activity 绑定
+ */
+inline fun <reified T : ViewDataBinding> Activity.binding(@LayoutRes resId: Int): Lazy<T> =
+    lazy { DataBindingUtil.setContentView<T>(this, resId) }
