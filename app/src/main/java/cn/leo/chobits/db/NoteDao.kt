@@ -12,7 +12,7 @@ import androidx.room.*
 @Dao
 interface NoteDao {
 
-    @Query("SELECT version,title,summary,date FROM note")
+    @Query("SELECT * FROM note")
     fun getNoteList(): PagingSource<Int, NoteEntity>
 
     @Query("SELECT * FROM note WHERE _id = :id")

@@ -81,6 +81,7 @@ class DbProperty<T : RoomDatabase>(
 
 /**
  * 数据库委托
+ * @param clazz  RoomDatabase 子类
  */
 @Suppress("UNCHECKED_CAST", "UNUSED")
 class DbModelProperty<T : RoomDatabase>(

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
  * @date : 2020/11/17
  * 数据库版本
  */
-@Database(entities = [NoteEntity::class], version = 1)
+@Database(entities = [NoteEntity::class], version = 1, exportSchema = false)
 abstract class DB : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 }
