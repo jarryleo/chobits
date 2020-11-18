@@ -1,4 +1,4 @@
-package cn.leo.chobits.utils
+package cn.leo.chobits.ext
 
 import androidx.recyclerview.widget.RecyclerView
 import cn.leo.paging_ktx.SimplePagingAdapter

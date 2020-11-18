@@ -1,4 +1,4 @@
-package cn.leo.chobits.utils
+package cn.leo.chobits.ext
 
 import android.app.Activity
 import androidx.annotation.LayoutRes

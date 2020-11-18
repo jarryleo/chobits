@@ -3,7 +3,7 @@ package cn.leo.chobits.holder
 import cn.leo.chobits.R
 import cn.leo.chobits.databinding.ItemNoteListBinding
 import cn.leo.chobits.db.NoteEntity
-import cn.leo.chobits.utils.binding
+import cn.leo.chobits.ext.binding
 import cn.leo.paging_ktx.PagingDataAdapterKtx
 import cn.leo.paging_ktx.SimpleHolder
 

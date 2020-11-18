@@ -1,9 +1,13 @@
 package cn.leo.chobits.binding
 
+import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.leo.chobits.R
+import cn.leo.chobits.activity.NoteActivity
+import cn.leo.chobits.db.NoteEntity
+import cn.leo.chobits.ext.singleClick
 import cn.leo.chobits.view.StatusPager
 import cn.leo.paging_ktx.SimplePagingAdapter
 import cn.leo.paging_ktx.State
@@ -24,6 +28,27 @@ fun bindingAdapter(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
 @BindingAdapter("bindLinearLayoutManager")
 fun bindingLayoutManager(recyclerView: RecyclerView, orientation: Int) {
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, orientation, false)
+}
+
+/**
+ * 列表条目点击事件跳转
+ */
+@BindingAdapter("bindItemClick")
+fun bindingItemClick(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
+    adapter.setOnItemClickListener { _, _, position ->
+        val data = adapter.getData(position) as? NoteEntity
+        data?.let { NoteActivity.jumpActivity(recyclerView.context, it) }
+    }
+}
+
+/**
+ * View点击事件
+ */
+@BindingAdapter("bindClick")
+fun bindingClick(view: View, clickHandler: ClickHandler) {
+    view.singleClick {
+        clickHandler.onClick(it)
+    }
 }
 
 /**

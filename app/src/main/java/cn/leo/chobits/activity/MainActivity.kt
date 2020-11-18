@@ -5,9 +5,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import cn.leo.chobits.R
 import cn.leo.chobits.databinding.ActivityMainBinding
+import cn.leo.chobits.ext.binding
 import cn.leo.chobits.holder.NoteItemHolder
 import cn.leo.chobits.model.NoteListViewModel
-import cn.leo.chobits.utils.binding
 import cn.leo.paging_ktx.SimplePagingAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.adapter = SimplePagingAdapter(NoteItemHolder()).also { it.setPager(model.pager) }
+        binding.model = model
     }
 
 }

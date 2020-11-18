@@ -11,6 +11,10 @@
             name="adapter"
             type="cn.leo.paging_ktx.SimplePagingAdapter" />
 
+        <variable
+            name="model"
+            type="cn.leo.chobits.model.NoteListViewModel" />
+
     </data>
 
     <FrameLayout
@@ -27,10 +31,20 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 app:bindAdapter="@{adapter}"
+                app:bindItemClick="@{adapter}"
                 app:bindLinearLayoutManager="@{LinearLayoutManager.VERTICAL}"
                 tools:listitem="@layout/item_note_list" />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="@dimen/base_margin"
+            android:background="@drawable/bg_add"
+            android:padding="12dp"
+            android:src="@drawable/ic_note"
+            app:bindClick="@{model}" />
     </FrameLayout>
 </layout>
