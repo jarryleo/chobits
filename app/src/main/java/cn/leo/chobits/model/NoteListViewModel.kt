@@ -6,17 +6,19 @@ import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.activity.NoteActivity
 import cn.leo.chobits.binding.ClickHandler
 import cn.leo.chobits.db.DB
-import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.DbModelProperty
 import cn.leo.paging_ktx.SimplePager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 /**
  * @author : ling luo
  * @date : 2020/11/18
  * @description : 列表 ViewModel
  */
+
+@ExperimentalCoroutinesApi
+@FlowPreview
 class NoteListViewModel : ViewModel(), ClickHandler {
 
     private val db by DbModelProperty(DB::class.java)
@@ -26,19 +28,5 @@ class NoteListViewModel : ViewModel(), ClickHandler {
 
     override fun onClick(v: View) {
         NoteActivity.jumpActivity(v.context)
-    }
-
-    fun testInsert() {
-        viewModelScope.launch(Dispatchers.IO) {
-            db.runInTransaction {
-                db.noteDao().insert(
-                    NoteEntity(
-                        title = "测试标题，欢迎来到chobits～～",
-                        summary = "1234567",
-                        date = System.currentTimeMillis()
-                    )
-                )
-            }
-        }
     }
 }

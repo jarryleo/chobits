@@ -13,6 +13,8 @@ import cn.leo.paging_ktx.SimplePagingAdapter
 import cn.leo.paging_ktx.State
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.constant.RefreshState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
 /**
  * @author : ling luo
@@ -33,6 +35,8 @@ fun bindingLayoutManager(recyclerView: RecyclerView, orientation: Int) {
 /**
  * 列表条目点击事件跳转
  */
+@ExperimentalCoroutinesApi
+@FlowPreview
 @BindingAdapter("bindItemClick")
 fun bindingItemClick(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
     adapter.setOnItemClickListener { _, _, position ->
