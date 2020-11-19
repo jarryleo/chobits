@@ -10,8 +10,12 @@ import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.binding
 import cn.leo.chobits.ext.toDateyyyyMMddHHmm
 import cn.leo.chobits.model.NoteViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import org.jetbrains.anko.startActivity
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 class NoteActivity : AppCompatActivity() {
 
     private val binding: ActivityNoteBinding by binding(R.layout.activity_note)

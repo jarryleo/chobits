@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="cn.leo.chobits.db.NoteEntity" />
@@ -38,6 +40,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:text="@{data.summary}"
+            android:visibility="@{data.summary.empty ? View.GONE : View.VISIBLE}"
             app:layout_constrainedWidth="true"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="@id/tv_title"
