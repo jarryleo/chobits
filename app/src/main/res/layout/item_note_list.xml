@@ -36,6 +36,7 @@
         <TextView
             android:id="@+id/tv_summary"
             style="@style/base_text_size_14_gray_7A7A7A"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/base_padding"
             android:ellipsize="end"
             android:lines="1"
@@ -51,6 +52,7 @@
         <TextView
             android:id="@+id/tv_date"
             style="@style/base_text_size_12_gray_7A7A7A"
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/base_padding"
             android:layout_marginBottom="@dimen/base_margin"
             android:ellipsize="end"

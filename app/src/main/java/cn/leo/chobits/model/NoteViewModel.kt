@@ -45,7 +45,7 @@ class NoteViewModel : ViewModel() {
 
     private fun collect() {
         viewModelScope.launch {
-            flow.debounce(1000)
+            flow.debounce(200)
                 .collectLatest {
                     update(it)
                 }
@@ -80,6 +80,7 @@ class NoteViewModel : ViewModel() {
     private fun execute(text: String) {
         val sp = text.split("\n", limit = 2)
         if (data == null) {
+            //创建新的笔记
             data = NoteEntity(
                 version = 1L,
                 title = sp[0],
@@ -97,6 +98,7 @@ class NoteViewModel : ViewModel() {
                 }
             }
         } else {
+            //修改老的笔记
             data?.apply {
                 version++
                 title = sp[0]

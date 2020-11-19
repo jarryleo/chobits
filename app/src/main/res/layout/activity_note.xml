@@ -14,15 +14,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:context=".activity.NoteActivity">
 
         <EditText
-            android:padding="@dimen/base_padding"
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
             android:gravity="top|start"
+            android:padding="@dimen/base_padding"
             android:text="@{model.content}"
             android:textSize="18sp"
             app:addTextChangedListener="@{model.textWatcher}"
