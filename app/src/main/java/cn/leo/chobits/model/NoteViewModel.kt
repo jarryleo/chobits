@@ -29,6 +29,7 @@ class NoteViewModel : ViewModel() {
     var data: NoteEntity? by Delegates.observable(null) { _, _, new ->
         new?.content?.let {
             content.set(it)
+            flow.value = it
         }
     }
 
@@ -39,11 +40,10 @@ class NoteViewModel : ViewModel() {
     private val db by DbModelProperty(DB::class.java)
 
     val textWatcher = TextContentWatcher {
-        collect()
         flow.value = it
     }
 
-    private fun collect() {
+    init {
         viewModelScope.launch {
             flow.debounce(200)
                 .collectLatest {
@@ -53,8 +53,17 @@ class NoteViewModel : ViewModel() {
     }
 
     override fun onCleared() {
-        update(content.get())
         super.onCleared()
+        data = null
+    }
+
+    private fun delNote() {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.runInTransaction {
+                db.noteDao().del(data!!)
+                data = null
+            }
+        }
     }
 
     private fun update(text: String?) {
@@ -66,19 +75,12 @@ class NoteViewModel : ViewModel() {
                 delNote()
             }
         }
-        execute(text!!)
+        saveNote(text!!)
     }
 
-    private fun delNote() {
-        viewModelScope.launch(Dispatchers.IO) {
-            db.runInTransaction {
-                db.noteDao().del(data!!)
-            }
-        }
-    }
-
-    private fun execute(text: String) {
+    private fun saveNote(text: String) {
         val sp = text.split("\n", limit = 2)
+        val date = System.currentTimeMillis()
         if (data == null) {
             //创建新的笔记
             data = NoteEntity(
@@ -90,14 +92,19 @@ class NoteViewModel : ViewModel() {
                     ""
                 },
                 content = text,
-                date = System.currentTimeMillis()
+                date = date
             )
             viewModelScope.launch(Dispatchers.IO) {
                 db.runInTransaction {
                     db.noteDao().insert(data!!)
+                    data = db.noteDao().getNoteByDate(date)
+                    Log.e("创建新笔记", "saveNote: $text")
                 }
             }
         } else {
+            if (text == data?.content) {
+                return
+            }
             //修改老的笔记
             data?.apply {
                 version++
@@ -108,11 +115,14 @@ class NoteViewModel : ViewModel() {
                     ""
                 }
                 content = text
-                date = System.currentTimeMillis()
+                this.date = date
             }
             viewModelScope.launch(Dispatchers.IO) {
                 db.runInTransaction {
-                    db.noteDao().update(data!!)
+                    data?.let {
+                        db.noteDao().update(it)
+                        Log.e("保存笔记", "saveNote: $text  id = ${data?._id}")
+                    }
                 }
             }
         }

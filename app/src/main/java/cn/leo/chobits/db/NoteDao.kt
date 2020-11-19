@@ -12,20 +12,23 @@ import androidx.room.*
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM note")
+    @Query("SELECT * FROM note ORDER BY date DESC")
     fun getNoteList(): PagingSource<Int, NoteEntity>
+
+    @Query("SELECT * FROM note WHERE date = :date")
+    fun getNoteByDate(date: Long): NoteEntity
 
     @Query("SELECT * FROM note WHERE _id = :id")
     fun getContentById(id: Long): LiveData<NoteEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg userBeans: NoteEntity)
+    fun insert(vararg note: NoteEntity)
 
     @Update
-    fun update(vararg userBeans: NoteEntity): Int
+    fun update(vararg note: NoteEntity): Int
 
     @Delete
-    fun del(vararg userBean: NoteEntity): Int
+    fun del(vararg note: NoteEntity): Int
 
     @Query("DELETE FROM note")
     fun delAll()
