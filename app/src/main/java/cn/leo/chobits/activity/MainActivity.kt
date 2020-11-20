@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding.adapter = adapter
         binding.model = model
-        adapter.setPager(model.pager)
     }
 
 }

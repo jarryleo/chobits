@@ -9,6 +9,8 @@ import cn.leo.chobits.activity.NoteActivity
 import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.singleClick
 import cn.leo.chobits.view.StatusPager
+import cn.leo.paging_ktx.DifferData
+import cn.leo.paging_ktx.SimplePager
 import cn.leo.paging_ktx.SimplePagingAdapter
 import cn.leo.paging_ktx.State
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -22,9 +24,16 @@ import kotlinx.coroutines.FlowPreview
  * @description : DataBinding 适配器
  */
 
-@BindingAdapter("bindAdapter")
-fun bindingAdapter(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
-    recyclerView.adapter = adapter
+@BindingAdapter("bindAdapter", "bindData")
+fun <T : DifferData> bindingAdapter(
+    recyclerView: RecyclerView,
+    adapter: SimplePagingAdapter,
+    data: SimplePager<*, T>?
+) {
+    data?.let {
+        recyclerView.adapter = adapter
+        adapter.setPager(data)
+    }
 }
 
 @BindingAdapter("bindLinearLayoutManager")

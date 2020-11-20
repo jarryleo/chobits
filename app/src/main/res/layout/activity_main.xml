@@ -31,6 +31,7 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 app:bindAdapter="@{adapter}"
+                app:bindData="@{model.pager}"
                 app:bindItemClick="@{adapter}"
                 app:bindLinearLayoutManager="@{LinearLayoutManager.VERTICAL}"
                 tools:listitem="@layout/item_note_list" />
