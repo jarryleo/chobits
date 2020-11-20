@@ -19,21 +19,19 @@ import org.jetbrains.anko.startActivity
 class NoteActivity : AppCompatActivity() {
 
     private val binding: ActivityNoteBinding by binding(R.layout.activity_note)
-
     private val model: NoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        model.data = intent.getParcelableExtra(KEY_NOTE_DATA)
+        title = model.data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
         binding.model = model
-        val data = intent.getParcelableExtra<NoteEntity>(KEY_LIST_DATA)
-        title = data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
-        model.data = data
     }
 
     companion object {
-        private const val KEY_LIST_DATA = "listData"
+        private const val KEY_NOTE_DATA = "note_data"
         fun jumpActivity(context: Context, data: NoteEntity? = null) {
-            context.startActivity<NoteActivity>(KEY_LIST_DATA to data)
+            context.startActivity<NoteActivity>(KEY_NOTE_DATA to data)
         }
     }
 }
