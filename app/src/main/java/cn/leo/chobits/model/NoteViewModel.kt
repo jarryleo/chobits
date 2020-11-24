@@ -2,11 +2,11 @@ package cn.leo.chobits.model
 
 import android.util.Log
 import androidx.databinding.ObservableField
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.db.DB
 import cn.leo.chobits.db.NoteEntity
-import cn.leo.chobits.ext.DbModelProperty
 import cn.leo.chobits.ext.TextContentWatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,7 @@ import kotlin.properties.Delegates
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-class NoteViewModel : ViewModel() {
+class NoteViewModel @ViewModelInject constructor(var db: DB) : ViewModel() {
 
     var data: NoteEntity? by Delegates.observable(null) { _, _, new ->
         new?.content?.let {
@@ -36,8 +36,6 @@ class NoteViewModel : ViewModel() {
     val content = ObservableField<String>()
 
     private val flow = MutableStateFlow("")
-
-    private val db by DbModelProperty(DB::class.java)
 
     val textWatcher = TextContentWatcher {
         flow.value = it
