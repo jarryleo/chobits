@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.activity.NoteActivity
 import cn.leo.chobits.binding.ClickHandler
 import cn.leo.chobits.db.DB
-import cn.leo.paging_ktx.SimplePager
+import cn.leo.paging_ktx.simple.SimplePager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 

@@ -9,7 +9,7 @@
 
         <variable
             name="adapter"
-            type="cn.leo.paging_ktx.SimplePagingAdapter" />
+            type="cn.leo.paging_ktx.simple.SimplePagingAdapter" />
 
         <variable
             name="model"

@@ -26,8 +26,8 @@ class NoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model.data = intent.getParcelableExtra(KEY_NOTE_DATA)
-        title = model.data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
         binding.model = model
+        title = model.data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
     }
 
     companion object {
