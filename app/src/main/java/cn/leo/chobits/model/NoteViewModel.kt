@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.db.DB
 import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.TextContentWatcher
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 /**
@@ -24,7 +26,8 @@ import kotlin.properties.Delegates
  */
 @FlowPreview
 @ExperimentalCoroutinesApi
-class NoteViewModel @ViewModelInject constructor(var db: DB) : ViewModel() {
+@HiltViewModel
+class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
 
     var data: NoteEntity? by Delegates.observable(null) { _, _, new ->
         new?.content?.let {

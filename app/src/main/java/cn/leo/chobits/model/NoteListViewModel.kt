@@ -8,8 +8,10 @@ import cn.leo.chobits.activity.NoteActivity
 import cn.leo.chobits.binding.ClickHandler
 import cn.leo.chobits.db.DB
 import cn.leo.paging_ktx.simple.SimplePager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import javax.inject.Inject
 
 /**
  * @author : ling luo
@@ -19,7 +21,8 @@ import kotlinx.coroutines.FlowPreview
 
 @ExperimentalCoroutinesApi
 @FlowPreview
-class NoteListViewModel @ViewModelInject constructor(var db: DB) : ViewModel(), ClickHandler {
+@HiltViewModel
+class NoteListViewModel @Inject constructor(var db: DB) : ViewModel(), ClickHandler {
 
     val pager =
         SimplePager(viewModelScope, pagingSource = { db.noteDao().getNoteList() })

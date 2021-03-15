@@ -6,8 +6,7 @@ import cn.leo.chobits.ext.RoomHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
-import javax.inject.Singleton
+import dagger.hilt.components.SingletonComponent
 
 /**
  * @author : ling luo
@@ -16,10 +15,9 @@ import javax.inject.Singleton
  */
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class RoomModule {
 
-    @Singleton
     @Provides
     fun provideRoomDatabase(context: Application): DB {
         return RoomHelper.getDb(context, DB::class.java)
