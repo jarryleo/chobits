@@ -1,6 +1,7 @@
 package cn.leo.chobits.db
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import cn.leo.chobits.ext.toDateyyyyMMddHHmm
@@ -12,6 +13,7 @@ import kotlinx.android.parcel.Parcelize
  * @date : 2020/11/17
  * @description : 笔记数据库实体类
  */
+@Keep
 @Parcelize
 @Entity(tableName = "note")
 data class NoteEntity(
