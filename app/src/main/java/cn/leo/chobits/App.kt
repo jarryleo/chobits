@@ -1,5 +1,6 @@
 package cn.leo.chobits
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -14,6 +15,7 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class App : Application() {
     companion object {
+        @SuppressLint("StaticFieldLeak")
         var context: Context? = null
     }
 

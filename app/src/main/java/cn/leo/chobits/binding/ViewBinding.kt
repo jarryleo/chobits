@@ -65,6 +65,17 @@ fun bindingClick(view: View, clickHandler: ClickHandler) {
 }
 
 /**
+ * View长按事件
+ */
+@BindingAdapter("bindLongClick")
+fun bindingLongClick(view: View, longClickHandler: LongClickHandler) {
+    view.setOnLongClickListener {
+        longClickHandler.onLongClick(view)
+        true
+    }
+}
+
+/**
  * 绑定下拉刷新的状态
  */
 @BindingAdapter("bindState")
