@@ -5,8 +5,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.leo.chobits.R
-import cn.leo.chobits.activity.NoteActivity
-import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.singleClick
 import cn.leo.chobits.view.StatusPager
 import cn.leo.paging_ktx.adapter.DifferData
@@ -15,8 +13,6 @@ import cn.leo.paging_ktx.simple.SimplePager
 import cn.leo.paging_ktx.simple.SimplePagingAdapter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.constant.RefreshState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
 /**
  * @author : ling luo
@@ -24,34 +20,26 @@ import kotlinx.coroutines.FlowPreview
  * @description : DataBinding 适配器
  */
 
-@BindingAdapter("bindAdapter", "bindData")
+
+@BindingAdapter("bindAdapter", "bindPager", "bindItemClick", requireAll = false)
 fun <T : DifferData> bindingAdapter(
     recyclerView: RecyclerView,
-    adapter: SimplePagingAdapter,
-    data: SimplePager<*, T>?
+    adapter: SimplePagingAdapter?,
+    pager: SimplePager<*, T>?,
+    listener: OnItemClickListener?
 ) {
-    data?.let {
+    pager?.let {
         recyclerView.adapter = adapter
-        adapter.setPager(data)
+        adapter?.setPager(pager)
+    }
+    adapter?.setOnItemClickListener { _, v, position ->
+        listener?.onItemClick(adapter, v, position)
     }
 }
 
 @BindingAdapter("bindLinearLayoutManager")
-fun bindingLayoutManager(recyclerView: RecyclerView, orientation: Int) {
+fun bindLinearLayoutManager(recyclerView: RecyclerView, orientation: Int) {
     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, orientation, false)
-}
-
-/**
- * 列表条目点击事件跳转
- */
-@ExperimentalCoroutinesApi
-@FlowPreview
-@BindingAdapter("bindItemClick")
-fun bindingItemClick(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
-    adapter.setOnItemClickListener { _, _, position ->
-        val data = adapter.getData(position) as? NoteEntity
-        data?.let { NoteActivity.jumpActivity(recyclerView.context, it) }
-    }
 }
 
 /**

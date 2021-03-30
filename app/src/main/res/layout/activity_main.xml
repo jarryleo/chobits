@@ -35,9 +35,9 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 app:bindAdapter="@{adapter}"
-                app:bindData="@{model.pager}"
-                app:bindItemClick="@{adapter}"
+                app:bindItemClick="@{model::onItemClick}"
                 app:bindLinearLayoutManager="@{LinearLayoutManager.VERTICAL}"
+                app:bindPager="@{model.pager}"
                 tools:listitem="@layout/item_note_list" />
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
