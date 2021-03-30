@@ -9,10 +9,10 @@ import cn.leo.chobits.activity.NoteActivity
 import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.singleClick
 import cn.leo.chobits.view.StatusPager
-import cn.leo.paging_ktx.DifferData
-import cn.leo.paging_ktx.SimplePager
-import cn.leo.paging_ktx.SimplePagingAdapter
-import cn.leo.paging_ktx.State
+import cn.leo.paging_ktx.adapter.DifferData
+import cn.leo.paging_ktx.adapter.State
+import cn.leo.paging_ktx.simple.SimplePager
+import cn.leo.paging_ktx.simple.SimplePagingAdapter
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.constant.RefreshState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,6 +65,17 @@ fun bindingClick(view: View, clickHandler: ClickHandler) {
 }
 
 /**
+ * View长按事件
+ */
+@BindingAdapter("bindLongClick")
+fun bindingLongClick(view: View, longClickHandler: LongClickHandler) {
+    view.setOnLongClickListener {
+        longClickHandler.onLongClick(view)
+        true
+    }
+}
+
+/**
  * 绑定下拉刷新的状态
  */
 @BindingAdapter("bindState")
@@ -91,7 +102,7 @@ fun bindingState(smartRefreshLayout: SmartRefreshLayout, adapter: SimplePagingAd
         adapter.retry()
     }
     //下拉刷新状态
-    adapter.setOnRefreshStateListener {
+    adapter.addOnRefreshStateListener {
         when (it) {
             is State.Loading -> {
                 //如果是手动下拉刷新，则不展示loading页
@@ -116,7 +127,7 @@ fun bindingState(smartRefreshLayout: SmartRefreshLayout, adapter: SimplePagingAd
         }
     }
     //加载更多状态
-    adapter.setOnLoadMoreStateListener {
+    adapter.addOnLoadMoreStateListener {
         when (it) {
             is State.Loading -> {
                 smartRefreshLayout.resetNoMoreData()

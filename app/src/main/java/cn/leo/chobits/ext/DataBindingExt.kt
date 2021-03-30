@@ -7,7 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import cn.leo.paging_ktx.PagingDataAdapterKtx
+import cn.leo.paging_ktx.adapter.ItemHelper
 
 /**
  * @author : ling luo
@@ -20,7 +20,7 @@ import cn.leo.paging_ktx.PagingDataAdapterKtx
  * RecyclerView 列表条目绑定，PagingAdapter库定制拓展
  */
 const val BINDING_KEY = "DataBinding_Key"
-inline fun <reified T : ViewDataBinding> PagingDataAdapterKtx.ItemHelper.binding(): T? {
+inline fun <reified T : ViewDataBinding> ItemHelper.binding(): T? {
     var dataBinding = getTag(BINDING_KEY) as? T
     if (dataBinding == null) {
         dataBinding = DataBindingUtil.bind<T>(itemView)?.apply {

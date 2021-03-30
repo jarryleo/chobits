@@ -1,7 +1,7 @@
 package cn.leo.chobits.ext
 
 import androidx.recyclerview.widget.RecyclerView
-import cn.leo.paging_ktx.SimplePagingAdapter
+import cn.leo.paging_ktx.simple.SimplePagingAdapter
 
 /**
  * @author : ling luo

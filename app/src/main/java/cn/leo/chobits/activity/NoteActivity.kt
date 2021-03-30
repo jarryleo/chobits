@@ -10,12 +10,14 @@ import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.ext.binding
 import cn.leo.chobits.ext.toDateyyyyMMddHHmm
 import cn.leo.chobits.model.NoteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import org.jetbrains.anko.startActivity
 
 @FlowPreview
 @ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class NoteActivity : AppCompatActivity() {
 
     private val binding: ActivityNoteBinding by binding(R.layout.activity_note)
@@ -24,8 +26,8 @@ class NoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         model.data = intent.getParcelableExtra(KEY_NOTE_DATA)
-        title = model.data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
         binding.model = model
+        title = model.data?.getDateFormat() ?: System.currentTimeMillis().toDateyyyyMMddHHmm()
     }
 
     companion object {

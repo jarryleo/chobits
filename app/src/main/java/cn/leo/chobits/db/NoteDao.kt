@@ -13,7 +13,10 @@ import androidx.room.*
 interface NoteDao {
 
     @Query("SELECT * FROM note ORDER BY date DESC")
-    fun getNoteList(): PagingSource<Int, NoteEntity>
+    fun getNoteListSource(): PagingSource<Int, NoteEntity>
+
+    @Query("SELECT * FROM note ORDER BY date DESC")
+    fun getNoteList(): List<NoteEntity>
 
     @Query("SELECT * FROM note WHERE date = :date")
     fun getNoteByDate(date: Long): NoteEntity
