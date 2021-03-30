@@ -26,6 +26,13 @@ class WebDavManager private constructor() {
     }
 
     /**
+     * 重设账号密码
+     */
+    fun setCredentials(username: String, password: String) {
+        sardine.setCredentials(username, password)
+    }
+
+    /**
      * 读取服务器路径下的文件列表
      * @param url  范例 https://dav.jianguoyun.com/dav/davTest
      */

@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import cn.leo.chobits.R
 import cn.leo.chobits.databinding.ActivityMainBinding
+import cn.leo.chobits.enumerate.SyncState
 import cn.leo.chobits.ext.binding
 import cn.leo.chobits.holder.NoteItemHolder
 import cn.leo.chobits.holder.TitleHolder
@@ -31,13 +32,25 @@ class MainActivity : AppCompatActivity() {
         binding.adapter = adapter
         binding.model = model
         binding.syncModel = syncModel
-        syncModel.isInSync.observe(this, {
-            if (it) {
-                toast(R.string.app_start_sync)
-            } else {
-                toast(R.string.app_sync_complete)
+        initObserver()
+    }
+
+    private fun initObserver() {
+        syncModel.syncStateLiveData.observe(this, {
+            when (it) {
+                SyncState.START -> toast(R.string.app_start_sync)
+                SyncState.FAILED -> toast(R.string.app_sync_failed)
+                else -> {
+                    toast(R.string.app_sync_complete)
+                    adapter.refresh()
+                }
             }
         })
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        adapter.refresh()
     }
 
 }

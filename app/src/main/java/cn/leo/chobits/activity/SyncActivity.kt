@@ -8,9 +8,10 @@ import cn.leo.chobits.R
 import cn.leo.chobits.databinding.ActivitySyncBinding
 import cn.leo.chobits.ext.binding
 import cn.leo.chobits.model.SyncViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.startActivity
 
-
+@AndroidEntryPoint
 class SyncActivity : AppCompatActivity() {
     private val binding: ActivitySyncBinding by binding(R.layout.activity_sync)
     private val model: SyncViewModel by viewModels()

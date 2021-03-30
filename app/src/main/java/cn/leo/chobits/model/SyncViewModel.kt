@@ -14,6 +14,7 @@ import cn.leo.chobits.binding.ClickHandler
 import cn.leo.chobits.binding.LongClickHandler
 import cn.leo.chobits.db.DB
 import cn.leo.chobits.db.NoteEntity
+import cn.leo.chobits.enumerate.SyncState
 import cn.leo.chobits.ext.SP
 import cn.leo.chobits.ext.jsonToBean
 import cn.leo.chobits.ext.toJson
@@ -47,8 +48,9 @@ class SyncViewModel @Inject constructor(var db: DB) :
         }
     }
 
-    //同步状态
-    val isInSync = MutableLiveData<Boolean>()
+    //同步中状态
+    val syncStateLiveData = MutableLiveData<SyncState>()
+
 
     override fun onClick(v: View) {
         when (v.id) {
@@ -67,7 +69,7 @@ class SyncViewModel @Inject constructor(var db: DB) :
             SyncActivity.jumpActivity(context)
             return
         }
-        if (isInSync.value == true) {
+        if (syncStateLiveData.value == SyncState.START) {
             Log.e("SyncViewModel", "sync: 正在同步中，跳过事件")
             return
         }
@@ -75,7 +77,6 @@ class SyncViewModel @Inject constructor(var db: DB) :
         viewModelScope.launch(Dispatchers.IO) {
             Log.e("SyncViewModel", "sync: 开始同步")
             syncNote()
-            Log.e("SyncViewModel", "sync: 同步完成")
         }
     }
 
@@ -93,11 +94,13 @@ class SyncViewModel @Inject constructor(var db: DB) :
      */
     private suspend fun getNoteListFromWeb(): List<NoteEntity> {
         val list = webDav.fileList(url)
+        if (list.isNullOrEmpty()) {
+            return emptyList()
+        }
         val fileList = mutableListOf<NoteEntity>()
         list.forEach {
-            val filePath = it.href.rawPath
-            Log.d("getNoteListFromWeb", "$filePath")
             if (!it.isDirectory) {
+                val filePath = "$url/${it.displayName}"
                 val json = webDav.get(filePath)
                 val file = json.jsonToBean(NoteEntity::class.java)
                 file?.let {
@@ -144,8 +147,13 @@ class SyncViewModel @Inject constructor(var db: DB) :
      *  同步的时候比对云端，比云端高则删除云端，然后删除本地，比云端低，则把云端写入本地， 云端没有则直接删除
      */
     private suspend fun syncNote() {
-        isInSync.postValue(true)
+        syncStateLiveData.postValue(SyncState.START)
         val noteListFromWeb = getNoteListFromWeb()
+        if (noteListFromWeb.isNullOrEmpty()) {
+            syncStateLiveData.postValue(SyncState.FAILED)
+            Log.e("SyncViewModel", "sync: 同步失败")
+            return
+        }
         val noteListLocal = db.noteDao().getNoteList()
         //对比云端已有笔记
         noteListFromWeb.forEach { webNote ->
@@ -176,7 +184,8 @@ class SyncViewModel @Inject constructor(var db: DB) :
                 updateNoteToWeb(localNote)
             }
         }
-        isInSync.postValue(false)
+        syncStateLiveData.postValue(SyncState.SUCCESS)
+        Log.e("SyncViewModel", "sync: 同步完成")
     }
 
     /**
@@ -204,5 +213,13 @@ class SyncViewModel @Inject constructor(var db: DB) :
         asyncAndLock {
             db.runInTransaction { db.noteDao().del(note) }
         }
+    }
+
+    /**
+     * 更新webDav
+     */
+    override fun onCleared() {
+        super.onCleared()
+        webDav.setCredentials(username, password)
     }
 }
