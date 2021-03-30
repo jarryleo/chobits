@@ -49,9 +49,9 @@
             android:layout_gravity="right|bottom"
             android:layout_margin="@dimen/base_margin"
             android:background="@drawable/bg_add"
+            android:bindClick="@{model::onClickJump}"
             android:padding="10dp"
-            android:src="@drawable/ic_note"
-            app:bindClick="@{model}" />
+            android:src="@drawable/ic_note" />
 
         <ImageView
             android:id="@+id/iv_sync"
@@ -61,9 +61,9 @@
             android:layout_marginRight="@dimen/base_margin"
             android:layout_marginBottom="80dp"
             android:background="@drawable/bg_sync"
+            android:bindClick="@{syncModel::onClick}"
+            android:onLongClick="@{syncModel::onLongClick}"
             android:padding="8dp"
-            android:src="@drawable/ic_sync"
-            app:bindClick="@{syncModel}"
-            app:bindLongClick="@{syncModel}" />
+            android:src="@drawable/ic_sync" />
     </FrameLayout>
 </layout>

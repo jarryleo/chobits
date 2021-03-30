@@ -10,8 +10,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.R
 import cn.leo.chobits.activity.SyncActivity
-import cn.leo.chobits.binding.ClickHandler
-import cn.leo.chobits.binding.LongClickHandler
 import cn.leo.chobits.db.DB
 import cn.leo.chobits.db.NoteEntity
 import cn.leo.chobits.enumerate.SyncState
@@ -27,8 +25,7 @@ import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
-class SyncViewModel @Inject constructor(var db: DB) :
-    ViewModel(), ClickHandler, LongClickHandler {
+class SyncViewModel @Inject constructor(var db: DB) : ViewModel() {
 
     var url: String by SP("dav_url", "")
     var username: String by SP("username", "")
@@ -52,15 +49,16 @@ class SyncViewModel @Inject constructor(var db: DB) :
     val syncStateLiveData = MutableLiveData<SyncState>()
 
 
-    override fun onClick(v: View) {
+    fun onClick(v: View) {
         when (v.id) {
             R.id.iv_sync -> sync(v.context)
             R.id.tv_tutorials -> jumpToTutorials(v)
         }
     }
 
-    override fun onLongClick(v: View) {
+    fun onLongClick(v: View): Boolean {
         SyncActivity.jumpActivity(v.context)
+        return true
     }
 
     private fun sync(context: Context) {

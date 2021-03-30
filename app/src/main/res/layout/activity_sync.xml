@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -42,11 +41,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/base_margin"
+            android:onClick="@{model::onClick}"
             android:padding="@dimen/base_margin"
             android:text="@string/app_tutorials"
             android:textColor="@color/purple_200"
-            android:textSize="16sp"
-            app:bindClick="@{model}" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 </layout>

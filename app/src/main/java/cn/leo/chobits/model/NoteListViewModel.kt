@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.activity.NoteActivity
-import cn.leo.chobits.binding.ClickHandler
 import cn.leo.chobits.db.DB
 import cn.leo.paging_ktx.simple.SimplePager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,14 +20,14 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @FlowPreview
 @HiltViewModel
-class NoteListViewModel @Inject constructor(var db: DB) : ViewModel(), ClickHandler {
+class NoteListViewModel @Inject constructor(var db: DB) : ViewModel() {
 
     val pager = SimplePager(
         viewModelScope,
         pagingSource = { db.noteDao().getNoteListSource() }
     )
 
-    override fun onClick(v: View) {
+    fun onClickJump(v: View) {
         NoteActivity.jumpActivity(v.context)
     }
 

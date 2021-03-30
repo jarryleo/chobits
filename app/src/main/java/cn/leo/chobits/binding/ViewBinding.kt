@@ -55,23 +55,12 @@ fun bindingItemClick(recyclerView: RecyclerView, adapter: SimplePagingAdapter) {
 }
 
 /**
- * View点击事件
+ * View点击事件,加入点击事件防重
  */
-@BindingAdapter("bindClick")
-fun bindingClick(view: View, clickHandler: ClickHandler) {
+@BindingAdapter("android:bindClick")
+fun bindingClick(view: View, onClickListener: View.OnClickListener) {
     view.singleClick {
-        clickHandler.onClick(it)
-    }
-}
-
-/**
- * View长按事件
- */
-@BindingAdapter("bindLongClick")
-fun bindingLongClick(view: View, longClickHandler: LongClickHandler) {
-    view.setOnLongClickListener {
-        longClickHandler.onLongClick(view)
-        true
+        onClickListener.onClick(it)
     }
 }
 
