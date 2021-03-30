@@ -2,11 +2,11 @@ package cn.leo.chobits.model
 
 import android.util.Log
 import androidx.databinding.ObservableField
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cn.leo.chobits.db.DB
 import cn.leo.chobits.db.NoteEntity
+import cn.leo.chobits.ext.SP
 import cn.leo.chobits.ext.TextContentWatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -28,6 +30,8 @@ import kotlin.properties.Delegates
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
+    //云端地址
+    var url: String by SP("dav_url", "")
 
     var data: NoteEntity? by Delegates.observable(null) { _, _, new ->
         new?.content?.let {
@@ -44,6 +48,16 @@ class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
         flow.value = it
     }
 
+    //协程锁
+    private val mutex = Mutex()
+
+    //异步锁定
+    private fun asyncAndLock(action: () -> Unit) {
+        viewModelScope.launch(context = Dispatchers.IO) {
+            mutex.withLock { action.invoke() }
+        }
+    }
+
     init {
         viewModelScope.launch {
             flow.debounce(200)
@@ -58,27 +72,42 @@ class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
         data = null
     }
 
+
+    /**
+     * 从数据库删除笔记
+     */
     private fun delNote() {
-        viewModelScope.launch(Dispatchers.IO) {
+        asyncAndLock {
             db.runInTransaction {
-                db.noteDao().del(data!!)
+                data?.let {
+                    db.noteDao().del(it)
+                }
                 data = null
             }
         }
     }
 
+    /**
+     * 更新数据
+     */
     private fun update(text: String?) {
-        Log.e("update", "update: $text")
         if (text.isNullOrEmpty()) {
             if (data == null) {
                 return
-            } else {
+            }
+            if (url.isEmpty()) {
+                //没有设置云同步，直接删除本地笔记
                 delNote()
+                return
             }
         }
-        saveNote(text!!)
+        Log.e("update", "update: $text")
+        saveNote(text ?: "")
     }
 
+    /**
+     * 创建或者保存笔记
+     */
     private fun saveNote(text: String) {
         val sp = text.split("\n", limit = 2)
         val date = System.currentTimeMillis()
@@ -87,18 +116,15 @@ class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
             data = NoteEntity(
                 version = 1L,
                 title = sp[0],
-                summary = if (sp.size >= 2) {
-                    sp[1]
-                } else {
-                    ""
-                },
+                summary = if (sp.size >= 2) sp[1] else "",
                 content = text,
                 date = date
             )
-            viewModelScope.launch(Dispatchers.IO) {
+            //插入数据库
+            asyncAndLock {
                 db.runInTransaction {
                     db.noteDao().insert(data!!)
-                    data = db.noteDao().getNoteByDate(date)
+                    data = db.noteDao().getNoteByDate(date) //获取带id的数据
                     Log.e("创建新笔记", "saveNote: $text")
                 }
             }
@@ -108,21 +134,18 @@ class NoteViewModel @Inject constructor(var db: DB) : ViewModel() {
             }
             //修改老的笔记
             data?.apply {
-                version++
-                title = sp[0]
-                summary = if (sp.size >= 2) {
-                    sp[1]
-                } else {
-                    ""
-                }
-                content = text
+                this.version++
+                this.title = sp[0]
+                this.summary = if (sp.size >= 2) sp[1] else ""
+                this.content = text
                 this.date = date
             }
-            viewModelScope.launch(Dispatchers.IO) {
+            //更新数据库
+            asyncAndLock {
                 db.runInTransaction {
                     data?.let {
                         db.noteDao().update(it)
-                        Log.e("保存笔记", "saveNote: $text  id = ${data?._id}")
+                        Log.e("保存笔记", "saveNote: $text id = ${data?._id}")
                     }
                 }
             }

@@ -37,4 +37,18 @@ data class NoteEntity(
                 note.summary == summary &&
                 note.date == date
     }
+
+    override fun equals(other: Any?): Boolean {
+        return (other as? NoteEntity)?._id == _id
+    }
+
+    override fun hashCode(): Int {
+        var result = _id?.hashCode() ?: 0
+        result = 31 * result + version.hashCode()
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (summary?.hashCode() ?: 0)
+        result = 31 * result + (content?.hashCode() ?: 0)
+        result = 31 * result + date.hashCode()
+        return result
+    }
 }

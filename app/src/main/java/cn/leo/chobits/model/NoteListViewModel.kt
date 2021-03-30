@@ -1,14 +1,10 @@
 package cn.leo.chobits.model
 
-import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cn.leo.chobits.R
 import cn.leo.chobits.activity.NoteActivity
-import cn.leo.chobits.activity.SyncActivity
 import cn.leo.chobits.binding.ClickHandler
-import cn.leo.chobits.binding.LongClickHandler
 import cn.leo.chobits.db.DB
 import cn.leo.paging_ktx.simple.SimplePager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,26 +21,15 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @FlowPreview
 @HiltViewModel
-class NoteListViewModel @Inject constructor(var db: DB) : ViewModel(),
-    ClickHandler, LongClickHandler {
+class NoteListViewModel @Inject constructor(var db: DB) : ViewModel(), ClickHandler {
 
-    val pager =
-        SimplePager(viewModelScope, pagingSource = { db.noteDao().getNoteList() })
+    val pager = SimplePager(
+        viewModelScope,
+        pagingSource = { db.noteDao().getNoteListSource() }
+    )
 
     override fun onClick(v: View) {
-        when (v.id) {
-            R.id.iv_add -> NoteActivity.jumpActivity(v.context)
-            R.id.iv_sync -> sync(v.context)
-        }
+        NoteActivity.jumpActivity(v.context)
     }
 
-    override fun onLongClick(v: View) {
-        SyncActivity.jumpActivity(v.context)
-    }
-
-    private fun sync(context: Context) {
-        //1.检查同步服务器配置，没有配置跳转到配置页。
-        //2.有配置，直接开始同步逻辑
-        SyncActivity.jumpActivity(context)
-    }
 }

@@ -15,6 +15,10 @@
             name="model"
             type="cn.leo.chobits.model.NoteListViewModel" />
 
+        <variable
+            name="syncModel"
+            type="cn.leo.chobits.model.SyncViewModel" />
+
     </data>
 
     <FrameLayout
@@ -59,7 +63,7 @@
             android:background="@drawable/bg_sync"
             android:padding="8dp"
             android:src="@drawable/ic_sync"
-            app:bindClick="@{model}"
-            app:bindLongClick="@{model}" />
+            app:bindClick="@{syncModel}"
+            app:bindLongClick="@{syncModel}" />
     </FrameLayout>
 </layout>

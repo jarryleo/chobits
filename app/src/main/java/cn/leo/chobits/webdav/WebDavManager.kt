@@ -65,4 +65,16 @@ class WebDavManager private constructor() {
             ""
         }
     }
+
+    /**
+     * 删除云端文件
+     * @param url  范例 https://dav.jianguoyun.com/dav/davTest/test.txt
+     */
+    suspend fun delete(url: String) {
+        return try {
+            sardine.delete(url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
