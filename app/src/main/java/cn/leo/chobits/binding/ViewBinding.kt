@@ -2,8 +2,10 @@ package cn.leo.chobits.binding
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import cn.leo.chobits.R
 import cn.leo.chobits.ext.singleClick
 import cn.leo.chobits.view.StatusPager
@@ -21,25 +23,80 @@ import com.scwang.smartrefresh.layout.constant.RefreshState
  */
 
 
-@BindingAdapter("bindAdapter", "bindPager", "bindItemClick", requireAll = false)
+@BindingAdapter(
+    "bindAdapter",
+    "bindPager",
+    "bindItemClick",
+    "bindItemChildClick",
+    requireAll = false
+)
 fun <T : DifferData> bindingAdapter(
     recyclerView: RecyclerView,
     adapter: SimplePagingAdapter?,
     pager: SimplePager<*, T>?,
-    listener: OnItemClickListener?
+    itemClickListener: OnItemClickListener?,
+    itemChildClickListener: OnItemClickListener?
 ) {
-    pager?.let {
-        recyclerView.adapter = adapter
-        adapter?.setPager(pager)
+    if (adapter == null) return
+    recyclerView.adapter = adapter
+    if (pager == null) return
+    adapter.setPager(pager)
+    //条目点击
+    if (itemClickListener != null) {
+        adapter.setOnItemClickListener { _, v, position ->
+            itemClickListener.onItemClick(adapter, v, position)
+        }
     }
-    adapter?.setOnItemClickListener { _, v, position ->
-        listener?.onItemClick(adapter, v, position)
+    //条目内view点击
+    if (itemChildClickListener != null) {
+        adapter.setOnItemChildClickListener { _, v, position ->
+            itemChildClickListener.onItemClick(adapter, v, position)
+        }
     }
 }
 
-@BindingAdapter("bindLinearLayoutManager")
-fun bindLinearLayoutManager(recyclerView: RecyclerView, orientation: Int) {
-    recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, orientation, false)
+@BindingAdapter("bindLayoutManager", "bindOrientation", "bindSpanCount", requireAll = false)
+fun bindLayoutManager(
+    recyclerView: RecyclerView,
+    layoutManager: String?,
+    orientation: Int?,
+    spanCount: Int?
+) {
+    if (layoutManager == null) return
+    when (layoutManager) {
+        LinearLayoutManager::class.java.simpleName -> {
+            recyclerView.layoutManager =
+                LinearLayoutManager(
+                    recyclerView.context,
+                    orientation ?: LinearLayoutManager.VERTICAL,
+                    false
+                )
+        }
+        GridLayoutManager::class.java.simpleName -> {
+            recyclerView.layoutManager = GridLayoutManager(
+                recyclerView.context,
+                spanCount ?: 1,
+                orientation ?: GridLayoutManager.VERTICAL,
+                false
+            )
+        }
+        StaggeredGridLayoutManager::class.java.simpleName -> {
+            recyclerView.layoutManager =
+                StaggeredGridLayoutManager(
+                    spanCount ?: 2,
+                    StaggeredGridLayoutManager.VERTICAL
+                )
+        }
+        else -> {
+            recyclerView.layoutManager =
+                LinearLayoutManager(
+                    recyclerView.context,
+                    orientation ?: LinearLayoutManager.VERTICAL,
+                    false
+                )
+        }
+    }
+
 }
 
 /**
@@ -56,7 +113,10 @@ fun bindingClick(view: View, onClickListener: View.OnClickListener) {
  * 绑定下拉刷新的状态
  */
 @BindingAdapter("bindState")
-fun bindingState(smartRefreshLayout: SmartRefreshLayout, adapter: SimplePagingAdapter) {
+fun bindingState(
+    smartRefreshLayout: SmartRefreshLayout,
+    adapter: SimplePagingAdapter
+) {
     var statePager = smartRefreshLayout.getTag(R.id.status_pager_id) as? StatusPager
     if (statePager == null) {
         statePager = StatusPager.builder(smartRefreshLayout)
