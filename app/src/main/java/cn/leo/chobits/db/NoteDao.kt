@@ -12,7 +12,7 @@ import androidx.room.*
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM note ORDER BY date DESC")
+    @Query("SELECT * FROM note WHERE (content != \"\") ORDER BY date DESC")
     fun getNoteListSource(): PagingSource<Int, NoteEntity>
 
     @Query("SELECT * FROM note ORDER BY date DESC")
